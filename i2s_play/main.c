@@ -21,35 +21,43 @@
 #include "i2s_play_pcm.h"
 
 uintptr_t i2s0;
-const audio_format_t audio = {AUDIO_FMT_PCM, 16, 44100, 2};
+const audio_format_t audio = { AUDIO_FMT_PCM, 16, 44100, 2 };
 
 void init_i2s(void)
 {
     i2s_stop(i2s0);
-    i2s_config_as_render(i2s0, &audio, 10, I2S_AM_RIGHT, 0xc);
+    i2s_config_as_render(i2s0, &audio, 100, I2S_AM_RIGHT, 0xc);
     i2s_start(i2s0);
 }
+
+#define min(a, b) ((a) < (b) ? (a) : (b))
 
 int main(void)
 {
     printf("I2S2 INT test...\n");
 
     uint8_t *buffer = NULL;
-    size_t frames = 0;
-    uint32_t buffer_size = 0;
-    uint32_t i = 0;
+    size_t block_align = audio.bits_per_sample / 8 * audio.channels;
+    size_t total_frames = sizeof(test_pcm) / block_align;
 
     i2s0 = io_open("/dev/i2s2");
     configASSERT(i2s0);
     init_i2s();
     while (1)
     {
-        for (i = 0; (i * buffer_size) < sizeof(test_pcm); i++)
+        size_t offset = 0;
+        size_t reset_frames = total_frames;
+        while (reset_frames)
         {
+            size_t frames;
             i2s_get_buffer(i2s0, &buffer, &frames);
-            buffer_size = frames * audio.bits_per_sample / 8 * audio.channels;
-            memcpy(buffer, (char*)test_pcm + (i * buffer_size), buffer_size);
+            frames = min(frames, reset_frames);
+            size_t buffer_size = frames * block_align;
+            memcpy(buffer, (const uint8_t *)test_pcm + offset, buffer_size);
             i2s_release_buffer(i2s0, frames);
+
+            offset += buffer_size;
+            reset_frames -= frames;
         }
     }
     return 0;
