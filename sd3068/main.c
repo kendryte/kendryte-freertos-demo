@@ -18,8 +18,8 @@
 #include "sd3068.h"
 #include "project_cfg.h"
 
-uintptr_t i2c0;
-uintptr_t i2c_sd3068;
+handle_t i2c0;
+handle_t i2c_sd3068;
 struct time_t time_now;
 
 void vTask1()

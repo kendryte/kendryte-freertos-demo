@@ -18,7 +18,7 @@
 
 const fpioa_cfg_t g_fpioa_cfg = 
 {
-    .version = 1,
+    .version = PIN_CFG_VERSION,
     .functions_count = 6,
     .functions[0] = {30, FUNC_SPI0_SS0},
     .functions[1] = {32, FUNC_SPI0_SCLK},

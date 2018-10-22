@@ -44,11 +44,11 @@ enum _frame_length
     FRAME_LEN_32 = 32,
 } ;
 
-uintptr_t gio;
-uintptr_t spi0;
-uintptr_t spi_dfs8;
-uintptr_t spi_dfs16;
-uintptr_t spi_dfs32;
+handle_t gio;
+handle_t spi0;
+handle_t spi_dfs8;
+handle_t spi_dfs16;
+handle_t spi_dfs32;
 
 void init_dcx()
 {

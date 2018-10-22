@@ -18,7 +18,7 @@
 #include <task.h>
 #include "project_cfg.h"
 
-uintptr_t gio;
+handle_t gio;
 
 void vTask1()
 {

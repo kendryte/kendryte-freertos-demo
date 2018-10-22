@@ -4,8 +4,8 @@
 #include "i2c_slave.h"
 
 #define DELAY_TIME  10
-uintptr_t piohs;
-uintptr_t i2c0;
+handle_t piohs;
+handle_t i2c0;
 
 struct slave_info_t slave_device;
 

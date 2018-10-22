@@ -18,7 +18,7 @@
 
 const fpioa_cfg_t g_fpioa_cfg = 
 {
-    .version = 1,
+    .version = PIN_CFG_VERSION,
     .functions_count = 3,
     .functions[0] = {33, FUNC_I2S2_OUT_D1},
     .functions[1] = {34, FUNC_I2S2_WS},
