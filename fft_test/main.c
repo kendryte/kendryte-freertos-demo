@@ -19,7 +19,6 @@
 #include <sys/time.h>
 #include <encoding.h>
 #include <devices.h>
-#include <driver.h>
 #include <encoding.h>
 #include "fft_soft.h"
 

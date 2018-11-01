@@ -1,4 +1,3 @@
-#include <driver.h>
 #include <devices.h>
 #include <sys/unistd.h>
 #include "i2c_slave.h"

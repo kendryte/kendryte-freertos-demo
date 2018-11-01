@@ -21,7 +21,7 @@
 const fpioa_cfg_t g_fpioa_cfg =
 {
     .version = PIN_CFG_VERSION,
-    .functions_count = 5,
+    .functions_count = 4,
     .functions =
     {
         {32, FUNC_GPIOHS0 + TF_CS_GPIONUM},

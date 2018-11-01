@@ -18,7 +18,6 @@
 #include <time.h>
 #include <sys/time.h>
 #include <encoding.h>
-#include <driver.h>
 #include <devices.h>
 
 #define SHA256_HASH_WORDS   8L

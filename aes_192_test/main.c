@@ -18,7 +18,6 @@
 #include <time.h>
 #include <sys/time.h>
 #include <devices.h>
-#include <driver.h>
 #include "aes_cbc.h"
 #include "gcm.h"
 

@@ -46,7 +46,7 @@ uint8_t OV5640_RD_Reg(uint16_t reg)
 void ov5640_file_init()
 {
     file_sccb = io_open("/dev/sccb0");
-    file_ov5640 = sccb_get_device(file_sccb, "ov5640", OV5640_ADDR, REGLENGTH);
+    file_ov5640 = sccb_get_device(file_sccb, OV5640_ADDR, REGLENGTH);
 }
 
 void ov5640_init(void)

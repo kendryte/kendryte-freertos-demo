@@ -63,7 +63,7 @@ int32_t main(void)
 {
     i2c0 = io_open("/dev/i2c0");
     configASSERT(i2c0);
-    i2c_sd3068 = i2c_get_device(i2c0, "sd3068", SD3068ADDR, SD3068WIDTH);
+    i2c_sd3068 = i2c_get_device(i2c0, SD3068ADDR, SD3068WIDTH);
 
     sd3068_init(i2c_sd3068);
 
