@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <devices.h>
 #include <sys/unistd.h>
-#include <ws2812b/ws2812b.h>
+#include <misc/ws2812b/ws2812b.h>
 #include "project_cfg.h"
 
 uintptr_t spi1;
