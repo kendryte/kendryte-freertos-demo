@@ -6,11 +6,11 @@
 #define SLAVE_MAX_ADDR  14
 #define SLAVE_ADDRESS   0x32
 
-struct slave_info_t
+typedef struct _slave_info
 {
     uint8_t acces_reg;
     uint8_t reg_data[SLAVE_MAX_ADDR];
-};
+} slave_info_t;
 
 void i2c_slave_init(void);
 void i2c_master_init(void);

@@ -6,7 +6,8 @@
 handle_t piohs;
 handle_t i2c0;
 
-struct slave_info_t slave_device;
+slave_info_t slave_device;
+i2c_slave_handler_t slave_handler;
 
 void i2c_slave_receive(uint32_t data)
 {
@@ -46,13 +47,11 @@ void i2c_slave_event(i2c_event_t event)
 void i2c_slave_init(void)
 {
     i2c0 = io_open("/dev/i2c0");
-    i2c_slave_handler_t handler =
-    {
-        .on_event = i2c_slave_event,
-        .on_receive = i2c_slave_receive,
-        .on_transmit = i2c_slave_transmit,
-    };
-    i2c_config_as_slave(i2c0, SLAVE_ADDRESS, 7, &handler);
+    slave_handler.on_event = i2c_slave_event,
+    slave_handler.on_receive = i2c_slave_receive,
+    slave_handler.on_transmit = i2c_slave_transmit,
+
+    i2c_config_as_slave(i2c0, SLAVE_ADDRESS, 7, &slave_handler);
     slave_device.acces_reg = 0xFF;
 }
 

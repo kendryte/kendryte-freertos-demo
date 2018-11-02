@@ -21,9 +21,9 @@ const fpioa_cfg_t g_fpioa_cfg =
     .version = PIN_CFG_VERSION,
     .functions_count = 4,
     .functions[0] = {6, FUNC_GPIOHS6},
-    .functions[1] = {8, FUNC_GPIOHS7},
+    .functions[1] = {9, FUNC_GPIOHS7},
     .functions[2] = {7, FUNC_I2C0_SCLK},
-    .functions[3] = {9, FUNC_I2C0_SDA},
+    .functions[3] = {10, FUNC_I2C0_SDA},
 };
 
 #endif
