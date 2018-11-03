@@ -12,28 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <devices.h>
-#include <stdio.h>
-#include <string.h>
-#include "project_cfg.h"
+#ifndef _PROJECT_CFG_H_
+#define _PROJECT_CFG_H_
+#include <pin_cfg.h>
 
-handle_t uart1;
-
-int main()
+const fpioa_cfg_t g_fpioa_cfg =
 {
-    uint8_t recv = 0;
-    uart1 = io_open("/dev/uart1");
-
-    uart_config(uart1, 115200, 8, UART_STOP_1, UART_PARITY_NONE);
-
-    char *hel = {"hello uart!\n"};
-    io_write(uart1, (uint8_t *)hel, strlen(hel));
-
-    while (1)
+    .version = PIN_CFG_VERSION,
+    .functions_count = 1,
+    .functions =
     {
-        while (io_read(uart1, &recv, 1))
-        {
-            io_write(uart1, &recv, 1);
-        }
+        {40, FUNC_SPI1_D0}
     }
-}
+};
+
+#endif

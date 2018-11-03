@@ -22,7 +22,7 @@
 #define TEST_NUMBER (0x100U)
 uint8_t data_buf_send[TEST_NUMBER];
 uint8_t data_buf_recv[TEST_NUMBER];
-uintptr_t spi3;
+handle_t spi3;
 
 void vTask1()
 {

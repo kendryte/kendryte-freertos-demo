@@ -259,7 +259,7 @@ enum w25qxx_status_t w25qxx_write_data(uint32_t addr, uint8_t* data_buf, uint32_
 enum w25qxx_status_t w25qxx_init(uintptr_t spi_in)
 {
     uint8_t manuf_id, device_id;
-    spi_stand = spi_get_device(spi_in, "w25q", SPI_MODE_0, SPI_FF_STANDARD, CHIP_SELECT, FRAME_LENGTH);
+    spi_stand = spi_get_device(spi_in, SPI_MODE_0, SPI_FF_STANDARD, CHIP_SELECT, FRAME_LENGTH);
     spi_dev_set_clock_rate(spi_stand, 800000);
     w25qxx_read_id(&manuf_id, &device_id);
     if ((manuf_id != 0xEF && manuf_id != 0xC8) || (device_id != 0x17 && device_id != 0x16))
@@ -270,11 +270,11 @@ enum w25qxx_status_t w25qxx_init(uintptr_t spi_in)
     switch (WORK_TRANS_MODE)
     {
         case SPI_FF_DUAL:
-            spi_adapter = spi_get_device(spi_in, "w25q", SPI_MODE_0, SPI_FF_DUAL, CHIP_SELECT, FRAME_LENGTH);
+            spi_adapter = spi_get_device(spi_in, SPI_MODE_0, SPI_FF_DUAL, CHIP_SELECT, FRAME_LENGTH);
             spi_dev_config_non_standard(spi_adapter, INSTRUCTION_LENGTH, ADDRESS_LENGTH, WAIT_CYCLE, SPI_AITM_STANDARD);
             break;
         case SPI_FF_QUAD:
-            spi_adapter = spi_get_device(spi_in, "w25q", SPI_MODE_0, SPI_FF_QUAD, CHIP_SELECT, FRAME_LENGTH);
+            spi_adapter = spi_get_device(spi_in, SPI_MODE_0, SPI_FF_QUAD, CHIP_SELECT, FRAME_LENGTH);
             spi_dev_config_non_standard(spi_adapter, INSTRUCTION_LENGTH, ADDRESS_LENGTH, WAIT_CYCLE, SPI_AITM_STANDARD);
             w25qxx_enable_quad_mode();
             break;

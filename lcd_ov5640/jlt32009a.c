@@ -44,11 +44,11 @@ enum _frame_length
     FRAME_LEN_32 = 32,
 } ;
 
-uintptr_t gio;
-uintptr_t spi0;
-uintptr_t spi_dfs8;
-uintptr_t spi_dfs16;
-uintptr_t spi_dfs32;
+handle_t gio;
+handle_t spi0;
+handle_t spi_dfs8;
+handle_t spi_dfs16;
+handle_t spi_dfs32;
 
 void init_dcx()
 {
@@ -74,13 +74,13 @@ void spi_control_init()
 {
     spi0 = io_open("/dev/spi0");
     configASSERT(spi0);
-    spi_dfs8 = spi_get_device(spi0, "lcd", SPI_MODE_0, SPI_FF_OCTAL, 1 << SPI_SLAVE_SELECT, FRAME_LEN_8);
+    spi_dfs8 = spi_get_device(spi0, SPI_MODE_0, SPI_FF_OCTAL, 1 << SPI_SLAVE_SELECT, FRAME_LEN_8);
     spi_dev_config_non_standard(spi_dfs8, INSTRUCTION_LEN_8, ADDRESS_LEN_0, WAIT_CYCLE, SPI_AITM_AS_FRAME_FORMAT);
     
-    spi_dfs16 = spi_get_device(spi0, "lcd", SPI_MODE_0, SPI_FF_OCTAL, 1 << SPI_SLAVE_SELECT, FRAME_LEN_16);
+    spi_dfs16 = spi_get_device(spi0, SPI_MODE_0, SPI_FF_OCTAL, 1 << SPI_SLAVE_SELECT, FRAME_LEN_16);
     spi_dev_config_non_standard(spi_dfs16, INSTRUCTION_LEN_16, ADDRESS_LEN_0, WAIT_CYCLE, SPI_AITM_AS_FRAME_FORMAT);
     
-    spi_dfs32 = spi_get_device(spi0, "lcd", SPI_MODE_0, SPI_FF_OCTAL, 1 << SPI_SLAVE_SELECT, FRAME_LEN_32);
+    spi_dfs32 = spi_get_device(spi0, SPI_MODE_0, SPI_FF_OCTAL, 1 << SPI_SLAVE_SELECT, FRAME_LEN_32);
     spi_dev_config_non_standard(spi_dfs32, INSTRUCTION_LEN_0, ADDRESS_LEN_32, WAIT_CYCLE, SPI_AITM_AS_FRAME_FORMAT);
 
     spi_dev_set_clock_rate(spi_dfs8, SPI_CLOCK_RATE);

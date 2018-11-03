@@ -18,10 +18,10 @@
 
 #define CHANNEL 0
 
-uintptr_t gio;
-uintptr_t pwm0;
-uintptr_t pwm1;
-uintptr_t timer;
+handle_t gio;
+handle_t pwm0;
+handle_t pwm1;
+handle_t timer;
 
 void irq_time(void *userdata)
 {

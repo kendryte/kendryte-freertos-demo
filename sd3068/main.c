@@ -18,8 +18,8 @@
 #include "sd3068.h"
 #include "project_cfg.h"
 
-uintptr_t i2c0;
-uintptr_t i2c_sd3068;
+handle_t i2c0;
+handle_t i2c_sd3068;
 struct time_t time_now;
 
 void vTask1()
@@ -63,7 +63,7 @@ int32_t main(void)
 {
     i2c0 = io_open("/dev/i2c0");
     configASSERT(i2c0);
-    i2c_sd3068 = i2c_get_device(i2c0, "sd3068", SD3068ADDR, SD3068WIDTH);
+    i2c_sd3068 = i2c_get_device(i2c0, SD3068ADDR, SD3068WIDTH);
 
     sd3068_init(i2c_sd3068);
 
