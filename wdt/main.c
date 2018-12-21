@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <devices.h>
-#include <driver.h>
 
 enum _enable
 {
