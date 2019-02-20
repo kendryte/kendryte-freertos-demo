@@ -1,4 +1,4 @@
-IIC slave test
+UART slave test
 =====
 "project_cfg.h" is the hardware related configuration files. Include pin config ...
 

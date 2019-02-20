@@ -15,10 +15,9 @@
 #include <stdio.h>
 #include <devices.h>
 #include <task.h>
-#include "project_cfg.h"
 #include "w25qxx.h"
 
-#define TEST_START_ADDR (0U)
+#define TEST_START_ADDR (0x100000U)
 #define TEST_NUMBER (0x100U)
 uint8_t data_buf_send[TEST_NUMBER];
 uint8_t data_buf_recv[TEST_NUMBER];
@@ -67,10 +66,9 @@ int main(void)
     spi3 = io_open("/dev/spi3");
     configASSERT(spi3);
     w25qxx_init(spi3);
-
-    xTaskCreate(vTask1, "vTask1", 1024, NULL, 3, NULL);
-    xTaskCreate(vTask2, "vTask2", 1024, NULL, 2, NULL);
-
+ 
+    xTaskCreate(vTask1, "vTask1", 20480, NULL, 3, NULL);
+    xTaskCreate(vTask2, "vTask2", 20480, NULL, 2, NULL);
     while(1)
         ;
     return 0;

@@ -19,13 +19,17 @@
 const fpioa_cfg_t g_fpioa_cfg = 
 {
     .version = PIN_CFG_VERSION,
-    .functions_count = 6,
-    .functions[0] = {30, FUNC_SPI0_SS0},
-    .functions[1] = {32, FUNC_SPI0_SCLK},
-    .functions[2] = {34, FUNC_SPI0_D0},
-    .functions[3] = {43, FUNC_SPI0_D1},
-    .functions[4] = {42, FUNC_SPI0_D2},
-    .functions[5] = {41, FUNC_SPI0_D3}
+    .functions_count = 7,
+    .functions =
+    {
+        {32, FUNC_SPI0_SCLK},
+        {34, FUNC_SPI0_SS0},
+        {36, FUNC_SPI0_D0},
+        {38, FUNC_SPI0_D1},
+        {33, FUNC_SPI_SLAVE_SCLK},
+        {35, FUNC_SPI_SLAVE_SS},
+        {37, FUNC_SPI_SLAVE_D0}
+    }
 };
 
 #endif
