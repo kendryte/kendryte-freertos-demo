@@ -16,19 +16,39 @@
 #define _PROJECT_CFG_H_
 #include <pin_cfg.h>
 
+#define SPI_SLAVE_INT_PIN       18
+#define SPI_SLAVE_INT_IO        4
+#define SPI_SLAVE_READY_PIN     22
+#define SPI_SLAVE_READY_IO      5
+#define SPI_SLAVE_CS_PIN        19
+#define SPI_SLAVE_CLK_PIN       20
+#define SPI_SLAVE_MOSI_PIN      21
+#define SPI_SLAVE_MISO_PIN      21
+
+#define SPI_MASTER_INT_PIN      28
+#define SPI_MASTER_INT_IO       6
+#define SPI_MASTER_CS_PIN       25
+#define SPI_MASTER_CS_IO        7
+#define SPI_MASTER_CLK_PIN      26
+#define SPI_MASTER_MOSI_PIN     27
+#define SPI_MASTER_MISO_PIN     27
+
 const fpioa_cfg_t g_fpioa_cfg = 
 {
     .version = PIN_CFG_VERSION,
-    .functions_count = 7,
+    .functions_count = 5 + 4,
     .functions =
     {
-        {32, FUNC_SPI0_SCLK},
-        {34, FUNC_SPI0_SS0},
-        {36, FUNC_SPI0_D0},
-        {38, FUNC_SPI0_D1},
-        {33, FUNC_SPI_SLAVE_SCLK},
-        {35, FUNC_SPI_SLAVE_SS},
-        {37, FUNC_SPI_SLAVE_D0}
+        {SPI_SLAVE_CS_PIN, FUNC_SPI_SLAVE_SS},
+        {SPI_SLAVE_CLK_PIN, FUNC_SPI_SLAVE_SCLK},
+        {SPI_SLAVE_MOSI_PIN, FUNC_SPI_SLAVE_D0},
+        {SPI_SLAVE_INT_PIN, FUNC_GPIOHS0 + SPI_SLAVE_INT_IO},
+        {SPI_SLAVE_READY_PIN, FUNC_GPIOHS0 + SPI_SLAVE_READY_IO},
+        
+        {SPI_MASTER_CLK_PIN, FUNC_SPI0_SCLK},
+        {SPI_MASTER_MOSI_PIN, FUNC_SPI0_D0},
+        {SPI_MASTER_CS_PIN, FUNC_GPIOHS0 + SPI_MASTER_CS_IO},
+        {SPI_MASTER_INT_PIN, FUNC_GPIOHS0 + SPI_MASTER_INT_IO},
     }
 };
 
