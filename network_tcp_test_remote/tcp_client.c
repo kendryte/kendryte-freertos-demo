@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
         printf("Usage:\n\t%s <ip address>\n", argv[0]);
         return -1;
     }
-    
+
      int sockfd = socket(AF_INET,SOCK_STREAM,0);
      if (0 > sockfd)
      {

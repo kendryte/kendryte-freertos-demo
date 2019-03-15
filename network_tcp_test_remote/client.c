@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +34,7 @@ int main(int argc, char** argv)
         printf("Usage:\n\t%s <ip address>\n", argv[0]);
         return -1;
     }
-    
+
     int   client_fd;
     char  buffer[BUFFER_MAX];
     struct sockaddr_in  server_addr;
