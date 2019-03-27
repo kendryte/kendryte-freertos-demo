@@ -2,7 +2,7 @@ Hardware diagram:
 
       MASTER                   SLAVE
 
-                            +-- INT -- -0.6M pullup
+                            +-- INT -- -2k ohm pullup
         CS  ----------------+-- CS
 
         CLK ------------------- CLK
