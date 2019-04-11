@@ -1,6 +1,7 @@
 # Kendryte FreeRTOS SDK Demos
 
 [![Build Status](https://travis-ci.org/kendryte/kendryte-freertos-demo.svg)](https://travis-ci.org/kendryte/kendryte-freertos-demo)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 This repo intends to offer *Kendryte FreeRTOS SDK* demos to make you easy to develop projects with *Kendyrte K210*. All demos are suitable for the **master** branch of latest corresponding SDK.
 
