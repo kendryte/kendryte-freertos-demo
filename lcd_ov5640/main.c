@@ -39,13 +39,6 @@ int main(void)
     dvp_init();
     ov5640_init();
 
-    vTaskSuspendAll();
     xTaskCreate(vTask1, "vTask1", 1024, NULL, 3, NULL);
-    if(!xTaskResumeAll())
-    {
-        taskYIELD();
-    }
-
-    while (1)
-        ;
+    vTaskDelete(NULL);
 }

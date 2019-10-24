@@ -15,6 +15,7 @@
 #include <sys/unistd.h>
 #include <devices.h>
 #include "dvp_camera.h"
+#include "iomem.h"
 
 enum _data_for
 {
@@ -31,8 +32,8 @@ enum _enable
 volatile uint8_t dvp_finish_flag;
 volatile uint8_t gram_mux;
 handle_t file_dvp;
-uint32_t lcd_gram0[38400] __attribute__((aligned(64)));
-uint32_t lcd_gram1[38400] __attribute__((aligned(64)));
+uint32_t *lcd_gram0;
+uint32_t *lcd_gram1;
 
 void sensor_restart()
 {
@@ -66,6 +67,8 @@ void on_irq_dvp(dvp_frame_event_t event, void* userdata)
 
 void dvp_init()
 {
+    lcd_gram0 = (uint32_t *)iomem_malloc(320*240*2);
+    lcd_gram1 = (uint32_t *)iomem_malloc(320*240*2);
     file_dvp = io_open("/dev/dvp0");
     configASSERT(file_dvp);
     sensor_restart();

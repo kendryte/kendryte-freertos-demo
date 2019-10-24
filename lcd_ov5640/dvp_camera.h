@@ -22,8 +22,8 @@
 extern volatile uint8_t dvp_finish_flag;
 extern volatile uint8_t gram_mux;
 
-extern uint32_t lcd_gram0[38400];
-extern uint32_t lcd_gram1[38400];
+extern uint32_t *lcd_gram0;
+extern uint32_t *lcd_gram1;
 
 void dvp_init();
 #endif

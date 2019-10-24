@@ -22,9 +22,15 @@
 #include "ov5640.h"
 #include "region_layer.h"
 #include "image_process.h"
+#include "w25qxx.h"
 #define INCBIN_STYLE INCBIN_STYLE_SNAKE
 #define INCBIN_PREFIX
 #include "incbin.h"
+#include "iomem.h"
+#include <time.h>
+#include <sys/time.h>
+#include <printf.h>
+#include <string.h>
 
 image_t kpu_image, display_image0, display_image1;
 handle_t model_context;
@@ -34,8 +40,15 @@ static obj_info_t face_detect_info;
 #define ANCHOR_NUM 5
 static float anchor[ANCHOR_NUM * 2] = {1.889,2.5245,  2.9465,3.94056, 3.99987,5.3658, 5.155437,6.92275, 6.718375,9.01025};
 
-INCBIN(model, "../src/face_detect/aug.kmodel");
+#define LOAD_KMODEL_FROM_FLASH 1
 
+#if LOAD_KMODEL_FROM_FLASH
+handle_t spi3;
+#define KMODEL_SIZE (380 * 1024)
+uint8_t *model_data;
+#else
+INCBIN(model, "../src/face_detect/detect.kmodel");
+#endif
 static void draw_edge(uint32_t *gram, obj_info_t *obj_info, uint32_t index, uint16_t color)
 {
     uint32_t data = ((uint32_t)color << 16) | (uint32_t)color;
@@ -91,6 +104,50 @@ static void draw_edge(uint32_t *gram, obj_info_t *obj_info, uint32_t index, uint
     }
 }
 
+void detect()
+{
+    int time_count = 0;
+    struct timeval get_time[2];
+
+    gettimeofday(&get_time[0], NULL);
+
+    while (1) {
+        while (camera_ctx.dvp_finish_flag == 0)
+            ;
+        camera_ctx.dvp_finish_flag = 0;
+        uint32_t *lcd_gram = camera_ctx.gram_mux ? (uint32_t *)camera_ctx.lcd_image1->addr : (uint32_t *)camera_ctx.lcd_image0->addr;
+
+        if (kpu_run(model_context, camera_ctx.ai_image->addr) != 0) {
+            printf("Cannot run kmodel.\n");
+            exit(-1);
+        }
+
+        float *output;
+        size_t output_size;
+        kpu_get_output(model_context, 0, (uint8_t **)&output, &output_size);
+
+        face_detect_rl.input = output;
+        region_layer_run(&face_detect_rl, &face_detect_info);
+        for (uint32_t face_cnt = 0; face_cnt < face_detect_info.obj_number; face_cnt++) {
+            draw_edge(lcd_gram, &face_detect_info, face_cnt, RED);
+        }
+
+        lcd_draw_picture(0, 0, 320, 240, lcd_gram);
+        camera_ctx.gram_mux ^= 0x01;
+        time_count ++;
+        if(time_count == 100)
+        {
+            gettimeofday(&get_time[1], NULL);;
+            printf("SPF:%fms Byte\n", ((get_time[1].tv_sec - get_time[0].tv_sec)*1000*1000 + (get_time[1].tv_usec - get_time[0].tv_usec))/1000.0/100);
+            memcpy(&get_time[0], &get_time[1], sizeof(struct timeval));
+            time_count = 0;
+        }
+    }
+    io_close(model_context);
+    image_deinit(&kpu_image);
+    image_deinit(&display_image0);
+    image_deinit(&display_image1);
+}
 int main(void)
 {
     kpu_image.pixel = 3;
@@ -114,8 +171,6 @@ int main(void)
     camera_ctx.lcd_image1 = &display_image1;
     camera_ctx.gram_mux = 0;
 
-    model_context = kpu_model_load_from_buffer(model_data);
-
     face_detect_rl.anchor_number = ANCHOR_NUM;
     face_detect_rl.anchor = anchor;
     face_detect_rl.threshold = 0.7;
@@ -128,37 +183,14 @@ int main(void)
     dvp_init(&camera_ctx);
     ov5640_init();
 
-    while (1)
-    {
-        while (camera_ctx.dvp_finish_flag == 0)
-            ;
-        camera_ctx.dvp_finish_flag = 0;
-        uint32_t *lcd_gram = camera_ctx.gram_mux ? (uint32_t *)camera_ctx.lcd_image1->addr : (uint32_t *)camera_ctx.lcd_image0->addr;
-        
-        if (kpu_run(model_context, camera_ctx.ai_image->addr) != 0)
-        {
-            printf("Cannot run kmodel.\n");
-            exit(-1);
-        }
-
-        float *output;
-        size_t output_size;
-        kpu_get_output(model_context, 0, (uint8_t **)&output, &output_size);
-
-        face_detect_rl.input = output;
-        region_layer_run(&face_detect_rl, &face_detect_info);
-        for (uint32_t face_cnt = 0; face_cnt < face_detect_info.obj_number; face_cnt++)
-        {
-            draw_edge(lcd_gram, &face_detect_info, face_cnt, RED);
-        }
-
-        lcd_draw_picture(0, 0, 320, 240, lcd_gram);
-        camera_ctx.gram_mux ^= 0x01;
-    }
-    io_close(model_context);
-    image_deinit(&kpu_image);
-    image_deinit(&display_image0);
-    image_deinit(&display_image1);
-    while (1)
-        ;
+#if LOAD_KMODEL_FROM_FLASH
+    model_data = (uint8_t *)iomem_malloc(KMODEL_SIZE);
+    spi3 = io_open("/dev/spi3");
+    configASSERT(spi3);
+    w25qxx_init(spi3);
+    w25qxx_read_data(0xA00000, model_data, KMODEL_SIZE);
+#endif
+    model_context = kpu_model_load_from_buffer(model_data);
+    xTaskCreate(detect, "detect", 2048*2, NULL, 3, NULL);
+    vTaskDelete(NULL);
 }
