@@ -50,10 +50,21 @@ const fpioa_cfg_t g_fpioa_cfg =
         {15, FUNC_CMOS_PCLK}
     }
 };
+
 const pin_cfg_t g_pin_cfg =
 {
     .version = PIN_CFG_VERSION,
     .set_spi0_dvp_data = 1
 };
 
+const power_bank_cfg_t g_power_bank_cfg =
+{
+    .version = PIN_CFG_VERSION,
+    .power_banks_count = 2,
+    .power_banks = 
+    {
+        {SYSCTL_POWER_BANK1, SYSCTL_POWER_V18},
+        {SYSCTL_POWER_BANK2, SYSCTL_POWER_V18}
+    }
+};
 #endif

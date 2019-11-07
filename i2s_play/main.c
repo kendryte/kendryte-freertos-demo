@@ -27,7 +27,6 @@ const audio_format_t audio = { AUDIO_FMT_PCM, 16, 44100, 2 };
 
 void init_i2s(void)
 {
-    i2s_stop(i2s0);
     i2s_config_as_render(i2s0, &audio, 10, I2S_AM_RIGHT, 0xc);
     i2s_start(i2s0);
 }
@@ -42,9 +41,10 @@ int main(void)
 
     i2s0 = io_open("/dev/i2s2");
     configASSERT(i2s0);
-    init_i2s();
+    
     while (1)
     {
+		init_i2s();
         size_t offset = 0;
         size_t reset_frames = total_frames;
         while (reset_frames)
@@ -59,6 +59,7 @@ int main(void)
             offset += buffer_size;
             reset_frames -= frames;
         }
+		i2s_stop(i2s0);
     }
     return 0;
 }

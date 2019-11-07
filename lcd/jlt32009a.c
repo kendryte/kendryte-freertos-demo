@@ -17,7 +17,7 @@
 #include "project_cfg.h"
 #include "jlt32009a.h"
 
-#define SPI_CLOCK_RATE  6400000U
+#define SPI_CLOCK_RATE  25000000U
 #define WAIT_CYCLE      0U
 
 enum _instruction_length

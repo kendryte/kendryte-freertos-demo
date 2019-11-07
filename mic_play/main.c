@@ -25,8 +25,6 @@ const audio_format_t audio = {AUDIO_FMT_PCM, 16, 44100, 2};
 
 void init_i2s(void)
 {
-    i2s_stop(i2s0);
-    i2s_stop(i2s2);
     i2s_config_as_render(i2s2, &audio, 10, I2S_AM_RIGHT, 0xc);
     i2s_config_as_capture(i2s0, &audio, 10, I2S_AM_STANDARD, 0x3);
     i2s_start(i2s2);
