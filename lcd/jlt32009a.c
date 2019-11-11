@@ -17,7 +17,8 @@
 #include "project_cfg.h"
 #include "jlt32009a.h"
 
-#define SPI_CLOCK_RATE  25000000U
+#define SPI_HIGH_CLOCK_RATE  25000000U
+#define SPI_LOW_CLOCK_RATE  3200000U
 #define WAIT_CYCLE      0U
 
 enum _instruction_length
@@ -83,9 +84,9 @@ void spi_control_init()
     spi_dfs32 = spi_get_device(spi0, SPI_MODE_0, SPI_FF_OCTAL, 1 << SPI_SLAVE_SELECT, FRAME_LEN_32);
     spi_dev_config_non_standard(spi_dfs32, INSTRUCTION_LEN_0, ADDRESS_LEN_32, WAIT_CYCLE, SPI_AITM_AS_FRAME_FORMAT);
 
-    spi_dev_set_clock_rate(spi_dfs8, SPI_CLOCK_RATE);
-    spi_dev_set_clock_rate(spi_dfs16, SPI_CLOCK_RATE);
-    spi_dev_set_clock_rate(spi_dfs32, SPI_CLOCK_RATE);
+    spi_dev_set_clock_rate(spi_dfs8, SPI_LOW_CLOCK_RATE);
+    spi_dev_set_clock_rate(spi_dfs16, SPI_HIGH_CLOCK_RATE);
+    spi_dev_set_clock_rate(spi_dfs32, SPI_HIGH_CLOCK_RATE);
 }
 
 void tft_hard_init(void)
