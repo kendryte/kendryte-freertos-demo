@@ -184,13 +184,16 @@ int main(void)
     ov5640_init();
 
 #if LOAD_KMODEL_FROM_FLASH
-    model_data = (uint8_t *)iomem_malloc(KMODEL_SIZE);
+    model_data = (uint8_t *)malloc(KMODEL_SIZE + 255);
+    uint8_t *model_data_align = (uint8_t *)(((uintptr_t)model_data+255)&(~255));
     spi3 = io_open("/dev/spi3");
     configASSERT(spi3);
     w25qxx_init(spi3);
-    w25qxx_read_data(0xA00000, model_data, KMODEL_SIZE);
+    w25qxx_read_data(0xA00000, model_data_align, KMODEL_SIZE);
+#else
+    uint8_t *model_data_align = model_data;
 #endif
-    model_context = kpu_model_load_from_buffer(model_data);
+    model_context = kpu_model_load_from_buffer(model_data_align);
     xTaskCreate(detect, "detect", 2048*2, NULL, 3, NULL);
     vTaskDelete(NULL);
 }
